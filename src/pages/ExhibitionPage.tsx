@@ -2,15 +2,38 @@ import React, { useEffect, useState } from "react";
 import ExhibitionCard from "../components/ExhibitionCard";
 import TagButton from "../components/TagButton";
 
+interface Tag {
+  tagName: string;
+  tagDescription: string;
+}
+
 interface Exhibition {
+  id: number;
   title: string;
-  operatingDay: string;
   address: string;
-  galleryName: string;
-  operatingHour: string;
-  imageUrl: string[];
-  artist: string;
-  description: string;
+  author: string;
+  startDate: string;
+  endDate: string;
+  openTime: {
+    hour: number;
+    minute: number;
+    second: number;
+    nano: number;
+  };
+  closeTime: {
+    hour: number;
+    minute: number;
+    second: number;
+    nano: number;
+  };
+  tags: Tag[];
+}
+
+interface ApiResponse {
+  success: boolean;
+  code: number;
+  message: string;
+  data: Exhibition[];
 }
 
 const ExhibitionPage: React.FC = () => {
@@ -19,41 +42,66 @@ const ExhibitionPage: React.FC = () => {
   const [popularTags, setPopularTags] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch("/dummy/data.json")
+    console.log("API 요청 시작...");
+    
+    fetch("/api/exhibitions")  
       .then((res) => {
-        if (!res.ok) throw new Error("데이터 파일을 찾을 수 없습니다.");
+        console.log("Response Status:", res.status);
+        console.log("Response OK:", res.ok);
+        if (!res.ok) throw new Error("API 요청 실패");
         return res.json();
       })
-      .then((json: Exhibition[]) => {
-        setData(json);
-        setFilteredData(json);
+      .then((response: ApiResponse) => {
+        console.log("=== API Response ===");
+        console.log("Full Response:", response);
+        console.log("Success:", response.success);
+        console.log("Code:", response.code);
+        console.log("Message:", response.message);
+        console.log("Data Length:", response.data?.length);
+        console.log("First Item:", response.data?.[0]);
+        
+        if (response.success && response.data) {
+          console.log("데이터 설정 중...", response.data.length, "개");
+          setData(response.data);
+          setFilteredData(response.data);
 
-        // 갤러리 이름을 태그로 사용
-        const galleryCount: Record<string, number> = {};
-        json.forEach((item) => {
-          if (item.galleryName) {
-            galleryCount[item.galleryName] = (galleryCount[item.galleryName] || 0) + 1;
-          }
-        });
+          const tagCount: Record<string, number> = {};
+          response.data.forEach((item) => {
+            console.log("Item Tags:", item.title, item.tags);
+            if (Array.isArray(item.tags)) {
+              item.tags.forEach((tag) => {
+                tagCount[tag.tagName] = (tagCount[tag.tagName] || 0) + 1;
+              });
+            }
+          });
 
-        const sortedTags = Object.keys(galleryCount).sort(
-          (a, b) => galleryCount[b] - galleryCount[a]
-        );
-        setPopularTags(sortedTags.slice(0, 6));
+          console.log("Tag Count:", tagCount);
+          const sortedTags = Object.keys(tagCount).sort(
+            (a, b) => tagCount[b] - tagCount[a]
+          );
+          console.log("Popular Tags:", sortedTags.slice(0, 6));
+          setPopularTags(sortedTags.slice(0, 6));
+        } else {
+          console.error("API 응답 오류:", response.message);
+        }
       })
       .catch((err) => {
-        console.error(err);
+        console.error("Error Message:", err.message);
       });
   }, []);
 
   const handleTagClick = (tag: string) => {
-    const filtered = data.filter((item) => item.galleryName === tag);
+    const filtered = data.filter((item) =>
+      item.tags.some((t) => t.tagName === tag)
+    );
     setFilteredData(filtered);
   };
 
   const resetFilter = () => {
     setFilteredData(data);
   };
+
+  console.log("Current State - Data:", data.length, "Filtered:", filteredData.length);
 
   return (
     <div className="container">
@@ -80,8 +128,8 @@ const ExhibitionPage: React.FC = () => {
       </header>
 
       <main className="list">
-        {filteredData.map((item, index) => (
-          <ExhibitionCard key={index} exhibition={item} />
+        {filteredData.map((item) => (
+          <ExhibitionCard key={item.id} exhibition={item} />
         ))}
       </main>
     </div>

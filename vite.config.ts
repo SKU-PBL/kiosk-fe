@@ -5,5 +5,14 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js']
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://api.insa-exhibition.shop',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   }
 })
