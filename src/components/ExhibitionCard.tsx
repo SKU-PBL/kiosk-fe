@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Tag {
   tagName: string;
@@ -28,14 +29,21 @@ interface Exhibition {
 }
 
 const ExhibitionCard: React.FC<{ exhibition: Exhibition }> = ({ exhibition }) => {
-  const formatTime = (time: { hour: number; minute: number }) => {
+  const navigate = useNavigate();
+
+  const formatTime = (time: { hour: number; minute: number } | null) => {
+    if (!time) return "정보 없음";
     return `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')}`;
+  };
+
+  const handleCardClick = () => {
+    navigate(`/exhibition/${exhibition.id}`);
   };
 
   const operatingTime = `${formatTime(exhibition.openTime)} ~ ${formatTime(exhibition.closeTime)}`;
 
   return (
-    <article className="card">
+    <article className="card" onClick={handleCardClick} style={{ cursor: "pointer" }}>
       <img 
         className="thumb" 
         src="https://via.placeholder.com/200" 

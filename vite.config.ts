@@ -11,7 +11,8 @@ export default defineConfig({
       '/api': {
         target: 'https://api.insa-exhibition.shop',
         changeOrigin: true,
-        secure: false
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '/api')
       }
     }
   }

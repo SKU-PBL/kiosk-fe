@@ -1,8 +1,13 @@
 import React from "react";
-import ExhibitionPage from "./pages/ExhibitionPage";
+import { BrowserRouter as Router } from "react-router-dom";
+import AppRouter from "./router/Router";
 
 const App: React.FC = () => {
-  return <ExhibitionPage />;
+  return (
+    <Router>
+      <AppRouter />
+    </Router>
+  );
 };
 
 export default App;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ExhibitionCard from "../components/ExhibitionCard";
 import TagButton from "../components/TagButton";
 
@@ -40,6 +41,7 @@ const ExhibitionPage: React.FC = () => {
   const [data, setData] = useState<Exhibition[]>([]);
   const [filteredData, setFilteredData] = useState<Exhibition[]>([]);
   const [popularTags, setPopularTags] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("API 요청 시작...");
@@ -111,7 +113,9 @@ const ExhibitionPage: React.FC = () => {
             HOT
           </button>
           <button className="pill">주변 전시회</button>
-          <button className="pill">전시회 추천</button>
+          <button className="pill" onClick={() => navigate("/recommendation")}>
+            전시회 추천
+          </button>
           <button className="pill">사진</button>
           <button className="pill">미디어 아트</button>
           <button className="pill">테마</button>
