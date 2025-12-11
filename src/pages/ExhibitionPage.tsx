@@ -11,23 +11,18 @@ interface Tag {
 interface Exhibition {
   id: number;
   title: string;
+  description: string;
   address: string;
   author: string;
   startDate: string;
   endDate: string;
-  openTime: {
-    hour: number;
-    minute: number;
-    second: number;
-    nano: number;
-  };
-  closeTime: {
-    hour: number;
-    minute: number;
-    second: number;
-    nano: number;
-  };
+  openTime: string;
+  closeTime: string;
   tags: Tag[];
+  views: number;
+  imagesUrls: string[];
+  galleryName: string;
+  phoneNum: string;
 }
 
 interface ApiResponse {
@@ -46,7 +41,7 @@ const ExhibitionPage: React.FC = () => {
   useEffect(() => {
     console.log("API 요청 시작...");
     
-    fetch("/api/exhibitions")  
+    fetch("/api/exhibitions")
       .then((res) => {
         console.log("Response Status:", res.status);
         console.log("Response OK:", res.ok);
