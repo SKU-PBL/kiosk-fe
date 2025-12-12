@@ -98,7 +98,7 @@ const ExhibitionDetailPage: React.FC = () => {
           <div className="info-item">
             <span className="info-icon">☎</span>
             <span className="info-text">{exhibition.phoneNum}</span>
-          </div>       ㅇ
+          </div>       
         </div>
 
         {exhibition.description && (

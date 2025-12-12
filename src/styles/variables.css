@@ -1,0 +1,8 @@
+:root {
+  --pill-bg: #fff;
+  --pill-border: #eee;
+  --accent: #ff6f4d;
+  --card-border: #e8e8e8;
+  --text: #111;
+  font-family: "Noto Sans KR", system-ui, Arial, sans-serif;
+}

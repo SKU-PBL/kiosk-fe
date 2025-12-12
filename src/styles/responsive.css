@@ -1,0 +1,9 @@
+@media (max-width: 420px) {
+  .thumb {
+    width: 88px;
+    height: 88px;
+  }
+  .container {
+    padding: 0 12px;
+  }
+}
