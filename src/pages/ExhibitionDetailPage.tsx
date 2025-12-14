@@ -38,12 +38,7 @@ const ExhibitionDetailPage: React.FC = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    const isDev = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-    const apiUrl = isDev 
-      ? `/api/exhibition/${id}`
-      : `https://api.insa-exhibition.shop/api/exhibition/${id}`;
-    
-    fetch(apiUrl)
+    fetch(`/api/exhibition/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("API 요청 실패");
         return res.json();

@@ -25,12 +25,7 @@ const RecommendationPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const isDev = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-    const apiUrl = isDev 
-      ? "/api/questions"
-      : "https://api.insa-exhibition.shop/api/questions";
-    
-    fetch(apiUrl)
+    fetch("/api/questions")
       .then((res) => {
         if (!res.ok) throw new Error("API 요청 실패");
         return res.json();

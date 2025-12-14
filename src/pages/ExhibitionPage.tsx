@@ -42,12 +42,7 @@ const ExhibitionPage: React.FC = () => {
   const loadHotExhibitions = () => {
     console.log("HOT 전시회 로딩 중...");
     
-    const isDev = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-    const apiUrl = isDev 
-      ? "/api/exhibitions/naver-count"
-      : "https://api.insa-exhibition.shop/api/exhibitions/naver-count";
-    
-    fetch(apiUrl)
+    fetch("/api/exhibitions/naver-count")
       .then((res) => {
         console.log("Response Status:", res.status);
         if (!res.ok) throw new Error("API 요청 실패");

@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/exhibitions/:path*",
+      "destination": "https://api.insa-exhibition.shop/api/exhibitions/:path*"
+    },
+    {
+      "source": "/api/exhibition/:path*",
+      "destination": "https://api.insa-exhibition.shop/api/exhibition/:path*"
+    },
+    {
+      "source": "/api/questions",
+      "destination": "https://api.insa-exhibition.shop/api/questions"
+    }
+  ]
+}
