@@ -42,7 +42,7 @@ const RecommendationPage: React.FC = () => {
       });
   }, []);
 
-  const handleChoice = (choice: "left" | "right") => {
+  const handleChoice = () => {
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
@@ -80,14 +80,14 @@ const RecommendationPage: React.FC = () => {
         <p className="question-text">{currentQuestion.content}</p>
 
         <div className="choices-grid">
-          <div className="choice-card left" onClick={() => handleChoice("left")}>
+          <div className="choice-card left" onClick={() => handleChoice()}>
             <img src={currentQuestion.leftImageUrl} alt={currentQuestion.leftTag} />
             <p className="choice-tag">{currentQuestion.leftTag}</p>
           </div>
 
           <div className="vs-divider">VS</div>
 
-          <div className="choice-card right" onClick={() => handleChoice("right")}>
+          <div className="choice-card right" onClick={() => handleChoice()}>
             <img src={currentQuestion.rightImageUrl} alt={currentQuestion.rightTag} />
             <p className="choice-tag">{currentQuestion.rightTag}</p>
           </div>
