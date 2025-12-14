@@ -23,6 +23,7 @@ interface Exhibition {
   imagesUrls: string[];
   galleryName: string;
   phoneNum: string;
+  naverCount: number;
 }
 
 interface ApiResponse {
@@ -38,33 +39,26 @@ const ExhibitionPage: React.FC = () => {
   const [popularTags, setPopularTags] = useState<string[]>([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("API 요청 시작...");
+  const loadHotExhibitions = () => {
+    console.log("HOT 전시회 로딩 중...");
     
-    fetch("/api/exhibitions")
+    fetch("/api/exhibitions/naver-count")
       .then((res) => {
         console.log("Response Status:", res.status);
-        console.log("Response OK:", res.ok);
         if (!res.ok) throw new Error("API 요청 실패");
         return res.json();
       })
       .then((response: ApiResponse) => {
-        console.log("=== API Response ===");
-        console.log("Full Response:", response);
-        console.log("Success:", response.success);
-        console.log("Code:", response.code);
-        console.log("Message:", response.message);
+        console.log("=== HOT API Response ===");
         console.log("Data Length:", response.data?.length);
-        console.log("First Item:", response.data?.[0]);
         
         if (response.success && response.data) {
-          console.log("데이터 설정 중...", response.data.length, "개");
+          console.log("HOT 데이터 설정 중...", response.data.length, "개");
           setData(response.data);
           setFilteredData(response.data);
 
           const tagCount: Record<string, number> = {};
           response.data.forEach((item) => {
-            console.log("Item Tags:", item.title, item.tags);
             if (Array.isArray(item.tags)) {
               item.tags.forEach((tag) => {
                 tagCount[tag.tagName] = (tagCount[tag.tagName] || 0) + 1;
@@ -72,7 +66,6 @@ const ExhibitionPage: React.FC = () => {
             }
           });
 
-          console.log("Tag Count:", tagCount);
           const sortedTags = Object.keys(tagCount).sort(
             (a, b) => tagCount[b] - tagCount[a]
           );
@@ -85,6 +78,10 @@ const ExhibitionPage: React.FC = () => {
       .catch((err) => {
         console.error("Error Message:", err.message);
       });
+  };
+
+  useEffect(() => {
+    loadHotExhibitions();
   }, []);
 
   const handleTagClick = (tag: string) => {
@@ -94,17 +91,13 @@ const ExhibitionPage: React.FC = () => {
     setFilteredData(filtered);
   };
 
-  const resetFilter = () => {
-    setFilteredData(data);
-  };
-
   console.log("Current State - Data:", data.length, "Filtered:", filteredData.length);
 
   return (
     <div className="container">
       <header className="filters">
         <div className="top-buttons">
-          <button className="pill hot" onClick={resetFilter}>
+          <button className="pill hot" onClick={loadHotExhibitions}>
             HOT
           </button>
           <button className="pill">주변 전시회</button>
