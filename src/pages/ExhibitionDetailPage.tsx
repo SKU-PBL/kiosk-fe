@@ -134,7 +134,7 @@ const ExhibitionDetailPage: React.FC = () => {
         <div className="detail-tags">
           {exhibition.tags && exhibition.tags.map((tag, idx) => (
             <div key={idx} className="detail-tag">
-              {tag.tagName}
+              {tag.tagDescription}
             </div>
           ))}
         </div>

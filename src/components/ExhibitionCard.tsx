@@ -48,7 +48,7 @@ const ExhibitionCard: React.FC<{ exhibition: Exhibition }> = ({ exhibition }) =>
         <div className="date">{exhibition.startDate} ~ {exhibition.endDate}</div>
         <div className="card-tags">
           {Array.isArray(exhibition.tags) && exhibition.tags.map((tag, idx) => (
-            <div key={idx} className="tag">{tag.tagName}</div>
+            <div key={idx} className="tag">{tag.tagDescription}</div>
           ))}
         </div>
       </div>
